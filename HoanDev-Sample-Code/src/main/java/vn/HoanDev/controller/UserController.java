@@ -3,6 +3,7 @@ package vn.HoanDev.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vn.HoanDev.dto.request.UserRequestDTO;
 import vn.HoanDev.dto.response.ResponseData;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("user")
+@Validated
 public class UserController {
 
 //    @PostMapping("/")
