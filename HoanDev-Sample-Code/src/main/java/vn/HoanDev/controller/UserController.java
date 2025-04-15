@@ -2,13 +2,17 @@ package vn.HoanDev.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import vn.HoanDev.Exception.ResourceNotFoundException;
 import vn.HoanDev.dto.request.UserRequestDTO;
 import vn.HoanDev.dto.response.ResponseData;
+import vn.HoanDev.dto.response.ResponseError;
 import vn.HoanDev.dto.response.ResponseFailure;
 import vn.HoanDev.dto.response.ResponseSuccess;
+import vn.HoanDev.service.UserService;
 
 import java.util.List;
 
@@ -22,10 +26,19 @@ public class UserController {
 //        return new ResponseData<>(HttpStatus.CREATED.value(), "added user", 1);
 //    }
 //
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/")
-    public ResponseFailure addUser(@Valid @RequestBody UserRequestDTO user){
-        System.out.println("thành công");
-        return new ResponseFailure(HttpStatus.CREATED,"added user");
+    public ResponseData<Integer> addUser(@Valid @RequestBody UserRequestDTO user){
+        try{
+            userService.addUser(user);
+            System.out.println("thành công");
+            return new ResponseData<>(HttpStatus.CREATED.value(),"added user");
+        }catch (ResourceNotFoundException e){
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "fail add user");
+        }
+
     }
 
     @PutMapping("/{userId}")
