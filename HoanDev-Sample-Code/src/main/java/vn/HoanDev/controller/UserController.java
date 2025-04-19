@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vn.HoanDev.Exception.ResourceNotFoundException;
+import vn.HoanDev.configuration.Translator;
 import vn.HoanDev.dto.request.UserRequestDTO;
 import vn.HoanDev.dto.response.ResponseData;
 import vn.HoanDev.dto.response.ResponseError;
@@ -34,9 +35,9 @@ public class UserController {
         try{
             userService.addUser(user);
             System.out.println("thành công");
-            return new ResponseData<>(HttpStatus.CREATED.value(),"added user");
+            return new ResponseData<>(HttpStatus.CREATED.value(), Translator.toLocale("use.add.success"));
         }catch (ResourceNotFoundException e){
-            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "fail add user");
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "fail add user "+e.getMessage());
         }
 
     }
@@ -44,7 +45,7 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseData<?> updateUser(@PathVariable @Min(1) int userId, @Valid @RequestBody UserRequestDTO user) {
         System.out.println("update user" + userId);
-        return new ResponseData<>(HttpStatus.ACCEPTED.value(), "updated user successfully");
+        return new ResponseData<>(HttpStatus.ACCEPTED.value(), Translator.toLocale("use.udp.success"));
     }
 
     // update một lần thì dùng method patch
