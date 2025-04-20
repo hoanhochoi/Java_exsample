@@ -1,5 +1,7 @@
 package vn.HoanDev.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 @Validated
+@Tag(name = "User controller")
 public class UserController {
 
 //    @PostMapping("/")
@@ -30,6 +33,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary= "add user",description = "api create new user")
     @PostMapping("/")
     public ResponseData<Integer> addUser(@Valid @RequestBody UserRequestDTO user){
         try{
@@ -41,7 +45,7 @@ public class UserController {
         }
 
     }
-
+    @Operation(summary= "update user",description = "api update user")
     @PutMapping("/{userId}")
     public ResponseData<?> updateUser(@PathVariable @Min(1) int userId, @Valid @RequestBody UserRequestDTO user) {
         System.out.println("update user" + userId);
@@ -49,19 +53,20 @@ public class UserController {
     }
 
     // update một lần thì dùng method patch
+    @Operation(summary= "changes status user",description = "api change status of user")
     @PatchMapping("/{userId}")
     public ResponseData<?> changeStatus(@PathVariable int userId, @RequestParam(required = false) boolean status) {
 //        lưu ý: requestParam để required = false là không bắt buộc phải nhập
         System.out.println("request change status, userId=" + userId);
         return new ResponseData<>(HttpStatus.ACCEPTED.value(), "changed user successfully");
     }
-
+    @Operation(summary= "delete user",description = "api delete user")
     @DeleteMapping("{userId}")
     public ResponseData<?> deleteUser(@PathVariable("userId") int id) {
         System.out.println("request delete userId =" + id);
         return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "deleted user successfully");
     }
-
+    @Operation(summary= "get user",description = "api get user detail")
     @GetMapping("{userId}")
     public ResponseData<UserRequestDTO> getUser(@PathVariable int userId) {
         System.out.println("request get userId=" + userId);
@@ -69,6 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/list")
+    @Operation(summary= "get list user per page ",description = "return user by pageno and pagesize")
 
     public ResponseData<List<UserRequestDTO>> getAllUser(@RequestParam(defaultValue = "0", required = false) int pageNo,
                                                          @Min(10) @RequestParam(defaultValue = "20", required = false) int pageSize) {

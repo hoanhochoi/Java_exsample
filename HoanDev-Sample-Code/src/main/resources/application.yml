@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: HoanDev-Sample-Code
+server:
+    port: 8086
+
+
+open:
+  api:
+    title: API-SERVER-DOCUMENT
+    description: description
+    version: v1.0.0
+    serverUrl: localhost://8086
+    serverName: serverName test
